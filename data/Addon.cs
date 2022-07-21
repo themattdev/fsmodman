@@ -2,19 +2,31 @@
 
 namespace FSModMan.data
 {
-    public class Addon : IEquatable<Addon>
+    public class Addon : Data
     {
-        public string Name { get; set; }
 
-        public Addon(string _Name)
+        public bool IsInstalled;
+        public string? Path;
+
+        public List<string> files = new();
+
+        public Addon(string _Name, string _Path)
         {
-
             Name = _Name;
+            Path = _Path;
+            IsInstalled = false;
+            Description = "Enter Description";
 
         }
 
+        public Addon() { }
+
+
         public override string ToString()
         {
+            if (Name == null)
+                return "";
+
             return Name;
         }
 
@@ -28,12 +40,15 @@ namespace FSModMan.data
         public bool Equals(Addon? other)
         {
             if (other == null) return false;
+            if(Name == null) return false;
             return Name.Equals(other.Name);
         }
 
         public override int GetHashCode()
         {
-            throw new NotImplementedException();
+            int result = (string.IsNullOrEmpty(Name) ? 0 : Name.GetHashCode()) + (string.IsNullOrEmpty(Path) ? 0 : Path.GetHashCode());
+
+            return result;
         }
     }
 }

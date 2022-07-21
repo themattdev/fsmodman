@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace FSModMan.data
 {
-    public class Group : IEquatable<Group>
+    public class Group : Data
     {
 
-        public string Name { get; set; }
-
         public List<Addon> addons = new();
+
+        public Group() { }
 
         public Group(string _Name)
         {
@@ -43,8 +43,20 @@ namespace FSModMan.data
             addons.Clear();
         }
 
+        public bool IsInstalled()
+        {
+            foreach (Addon addon in addons)
+                if (addon.IsInstalled == false)
+                    return false;
+
+            return true;
+        }
+
         public override string ToString()
         {
+            if (Name == null)
+                return "";
+
             return Name;
         }
 
@@ -58,12 +70,15 @@ namespace FSModMan.data
         public bool Equals(Group? other)
         {
             if(other == null) return false;
+            if (Name == null) return false;
             return Name.Equals(other.Name);
         }
 
         public override int GetHashCode()
         {
-            throw new NotImplementedException();
+            int result = addons.GetHashCode();
+
+            return result;
         }
 
     }

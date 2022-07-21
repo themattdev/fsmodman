@@ -28,57 +28,201 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnAddAddon = new System.Windows.Forms.Button();
-            this.btnAddGroup = new System.Windows.Forms.Button();
+            this.components = new System.ComponentModel.Container();
             this.addonTreeView = new System.Windows.Forms.TreeView();
+            this.mainMenu = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addAddonnMenuBtn = new System.Windows.Forms.ToolStripMenuItem();
+            this.addGroupMenuBtn = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.folderDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.installButton = new System.Windows.Forms.Button();
+            this.dataName = new System.Windows.Forms.TextBox();
+            this.dataDescription = new System.Windows.Forms.TextBox();
+            this.targetPath = new System.Windows.Forms.Label();
+            this.originPath = new System.Windows.Forms.Label();
+            this.targetButton = new System.Windows.Forms.Button();
+            this.originButton = new System.Windows.Forms.Button();
+            this.addonContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenu.SuspendLayout();
+            this.addonContextMenu.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // btnAddAddon
-            // 
-            this.btnAddAddon.Location = new System.Drawing.Point(16, 12);
-            this.btnAddAddon.Name = "btnAddAddon";
-            this.btnAddAddon.Size = new System.Drawing.Size(110, 47);
-            this.btnAddAddon.TabIndex = 0;
-            this.btnAddAddon.Text = "Add Addon";
-            this.btnAddAddon.UseVisualStyleBackColor = true;
-            this.btnAddAddon.Click += new System.EventHandler(this.btnAddAddon_Click);
-            // 
-            // btnAddGroup
-            // 
-            this.btnAddGroup.Location = new System.Drawing.Point(132, 12);
-            this.btnAddGroup.Name = "btnAddGroup";
-            this.btnAddGroup.Size = new System.Drawing.Size(110, 47);
-            this.btnAddGroup.TabIndex = 1;
-            this.btnAddGroup.Text = "Add Group";
-            this.btnAddGroup.UseVisualStyleBackColor = true;
-            this.btnAddGroup.Click += new System.EventHandler(this.btnAddGroup_Click);
             // 
             // addonTreeView
             // 
-            this.addonTreeView.Location = new System.Drawing.Point(16, 65);
+            this.addonTreeView.Location = new System.Drawing.Point(12, 27);
             this.addonTreeView.Name = "addonTreeView";
-            this.addonTreeView.Size = new System.Drawing.Size(226, 214);
+            this.addonTreeView.Size = new System.Drawing.Size(226, 411);
             this.addonTreeView.TabIndex = 2;
             this.addonTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.addonTreeView_AfterSelect);
+            this.addonTreeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.addonTreeView_MouseClick);
+            // 
+            // mainMenu
+            // 
+            this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.mainMenu.Location = new System.Drawing.Point(0, 0);
+            this.mainMenu.Name = "mainMenu";
+            this.mainMenu.Size = new System.Drawing.Size(800, 24);
+            this.mainMenu.TabIndex = 3;
+            this.mainMenu.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addAddonnMenuBtn,
+            this.addGroupMenuBtn,
+            this.saveToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // addAddonnMenuBtn
+            // 
+            this.addAddonnMenuBtn.Name = "addAddonnMenuBtn";
+            this.addAddonnMenuBtn.Size = new System.Drawing.Size(135, 22);
+            this.addAddonnMenuBtn.Text = "Add Addon";
+            this.addAddonnMenuBtn.Click += new System.EventHandler(this.addAddonnMenuBtn_Click);
+            // 
+            // addGroupMenuBtn
+            // 
+            this.addGroupMenuBtn.Name = "addGroupMenuBtn";
+            this.addGroupMenuBtn.Size = new System.Drawing.Size(135, 22);
+            this.addGroupMenuBtn.Text = "Add Group";
+            this.addGroupMenuBtn.Click += new System.EventHandler(this.addGroupMenuBtn_Click);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // installButton
+            // 
+            this.installButton.Location = new System.Drawing.Point(244, 149);
+            this.installButton.Name = "installButton";
+            this.installButton.Size = new System.Drawing.Size(75, 23);
+            this.installButton.TabIndex = 5;
+            this.installButton.Text = "Install";
+            this.installButton.UseVisualStyleBackColor = true;
+            this.installButton.Visible = false;
+            this.installButton.Click += new System.EventHandler(this.installBtn_Click);
+            // 
+            // dataName
+            // 
+            this.dataName.Enabled = false;
+            this.dataName.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.dataName.Location = new System.Drawing.Point(244, 85);
+            this.dataName.Name = "dataName";
+            this.dataName.Size = new System.Drawing.Size(544, 29);
+            this.dataName.TabIndex = 6;
+            this.dataName.Text = "Name";
+            this.dataName.Visible = false;
+            // 
+            // dataDescription
+            // 
+            this.dataDescription.Enabled = false;
+            this.dataDescription.Location = new System.Drawing.Point(244, 120);
+            this.dataDescription.Name = "dataDescription";
+            this.dataDescription.Size = new System.Drawing.Size(544, 23);
+            this.dataDescription.TabIndex = 8;
+            this.dataDescription.Text = "Description";
+            this.dataDescription.Visible = false;
+            // 
+            // targetPath
+            // 
+            this.targetPath.AutoSize = true;
+            this.targetPath.Location = new System.Drawing.Point(244, 31);
+            this.targetPath.Name = "targetPath";
+            this.targetPath.Size = new System.Drawing.Size(39, 15);
+            this.targetPath.TabIndex = 9;
+            this.targetPath.Text = "Target";
+            // 
+            // originPath
+            // 
+            this.originPath.AutoSize = true;
+            this.originPath.Location = new System.Drawing.Point(244, 60);
+            this.originPath.Name = "originPath";
+            this.originPath.Size = new System.Drawing.Size(40, 15);
+            this.originPath.TabIndex = 10;
+            this.originPath.Text = "Origin";
+            // 
+            // targetButton
+            // 
+            this.targetButton.Location = new System.Drawing.Point(713, 27);
+            this.targetButton.Name = "targetButton";
+            this.targetButton.Size = new System.Drawing.Size(75, 23);
+            this.targetButton.TabIndex = 11;
+            this.targetButton.Text = "Open";
+            this.targetButton.UseVisualStyleBackColor = true;
+            this.targetButton.Click += new System.EventHandler(this.targetButton_Click);
+            // 
+            // originButton
+            // 
+            this.originButton.Location = new System.Drawing.Point(713, 56);
+            this.originButton.Name = "originButton";
+            this.originButton.Size = new System.Drawing.Size(75, 23);
+            this.originButton.TabIndex = 12;
+            this.originButton.Text = "Open";
+            this.originButton.UseVisualStyleBackColor = true;
+            this.originButton.Click += new System.EventHandler(this.originButton_Click);
+            // 
+            // addonContextMenu
+            // 
+            this.addonContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addToToolStripMenuItem});
+            this.addonContextMenu.Name = "addonContextMenu";
+            this.addonContextMenu.Size = new System.Drawing.Size(112, 26);
+            // 
+            // addToToolStripMenuItem
+            // 
+            this.addToToolStripMenuItem.Name = "addToToolStripMenuItem";
+            this.addToToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.addToToolStripMenuItem.Text = "Add To";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.originButton);
+            this.Controls.Add(this.targetButton);
+            this.Controls.Add(this.originPath);
+            this.Controls.Add(this.targetPath);
+            this.Controls.Add(this.dataDescription);
+            this.Controls.Add(this.dataName);
+            this.Controls.Add(this.installButton);
             this.Controls.Add(this.addonTreeView);
-            this.Controls.Add(this.btnAddGroup);
-            this.Controls.Add(this.btnAddAddon);
+            this.Controls.Add(this.mainMenu);
+            this.MainMenuStrip = this.mainMenu;
             this.Name = "MainForm";
             this.Text = "FSModMan";
+            this.mainMenu.ResumeLayout(false);
+            this.mainMenu.PerformLayout();
+            this.addonContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private Button btnAddAddon;
-        private Button btnAddGroup;
         private TreeView addonTreeView;
+        private MenuStrip mainMenu;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem addAddonnMenuBtn;
+        private ToolStripMenuItem addGroupMenuBtn;
+        private FolderBrowserDialog folderDialog;
+        private Button installButton;
+        private TextBox dataName;
+        private TextBox dataDescription;
+        private Label targetPath;
+        private Label originPath;
+        private Button targetButton;
+        private Button originButton;
+        private ToolStripMenuItem saveToolStripMenuItem;
+        private ContextMenuStrip addonContextMenu;
+        private ToolStripMenuItem addToToolStripMenuItem;
     }
 }
