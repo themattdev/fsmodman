@@ -45,15 +45,18 @@
             this.originButton = new System.Windows.Forms.Button();
             this.addonContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uninstallButton = new System.Windows.Forms.Button();
+            this.saveButton = new System.Windows.Forms.Button();
             this.mainMenu.SuspendLayout();
             this.addonContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // addonTreeView
             // 
+            this.addonTreeView.CheckBoxes = true;
             this.addonTreeView.Location = new System.Drawing.Point(12, 27);
             this.addonTreeView.Name = "addonTreeView";
-            this.addonTreeView.Size = new System.Drawing.Size(226, 411);
+            this.addonTreeView.Size = new System.Drawing.Size(226, 365);
             this.addonTreeView.TabIndex = 2;
             this.addonTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.addonTreeView_AfterSelect);
             this.addonTreeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.addonTreeView_MouseClick);
@@ -101,18 +104,17 @@
             // 
             // installButton
             // 
-            this.installButton.Location = new System.Drawing.Point(244, 149);
+            this.installButton.Location = new System.Drawing.Point(12, 398);
             this.installButton.Name = "installButton";
             this.installButton.Size = new System.Drawing.Size(75, 23);
             this.installButton.TabIndex = 5;
             this.installButton.Text = "Install";
             this.installButton.UseVisualStyleBackColor = true;
             this.installButton.Visible = false;
-            this.installButton.Click += new System.EventHandler(this.installBtn_Click);
+            this.installButton.Click += new System.EventHandler(this.installButton_Click);
             // 
             // dataName
             // 
-            this.dataName.Enabled = false;
             this.dataName.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.dataName.Location = new System.Drawing.Point(244, 85);
             this.dataName.Name = "dataName";
@@ -123,10 +125,11 @@
             // 
             // dataDescription
             // 
-            this.dataDescription.Enabled = false;
             this.dataDescription.Location = new System.Drawing.Point(244, 120);
+            this.dataDescription.Multiline = true;
             this.dataDescription.Name = "dataDescription";
-            this.dataDescription.Size = new System.Drawing.Size(544, 23);
+            this.dataDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dataDescription.Size = new System.Drawing.Size(544, 91);
             this.dataDescription.TabIndex = 8;
             this.dataDescription.Text = "Description";
             this.dataDescription.Visible = false;
@@ -174,19 +177,42 @@
             this.addonContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addToToolStripMenuItem});
             this.addonContextMenu.Name = "addonContextMenu";
-            this.addonContextMenu.Size = new System.Drawing.Size(112, 26);
+            this.addonContextMenu.Size = new System.Drawing.Size(120, 26);
             // 
             // addToToolStripMenuItem
             // 
             this.addToToolStripMenuItem.Name = "addToToolStripMenuItem";
-            this.addToToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
-            this.addToToolStripMenuItem.Text = "Add To";
+            this.addToToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.addToToolStripMenuItem.Text = "Move To";
+            // 
+            // uninstallButton
+            // 
+            this.uninstallButton.Location = new System.Drawing.Point(93, 398);
+            this.uninstallButton.Name = "uninstallButton";
+            this.uninstallButton.Size = new System.Drawing.Size(75, 23);
+            this.uninstallButton.TabIndex = 13;
+            this.uninstallButton.Text = "Uninstall";
+            this.uninstallButton.UseVisualStyleBackColor = true;
+            this.uninstallButton.Visible = false;
+            this.uninstallButton.Click += new System.EventHandler(this.uninstallButton_Click);
+            // 
+            // saveButton
+            // 
+            this.saveButton.Location = new System.Drawing.Point(244, 217);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(75, 23);
+            this.saveButton.TabIndex = 14;
+            this.saveButton.Text = "Save";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 428);
+            this.Controls.Add(this.saveButton);
+            this.Controls.Add(this.uninstallButton);
             this.Controls.Add(this.originButton);
             this.Controls.Add(this.targetButton);
             this.Controls.Add(this.originPath);
@@ -224,5 +250,7 @@
         private ToolStripMenuItem saveToolStripMenuItem;
         private ContextMenuStrip addonContextMenu;
         private ToolStripMenuItem addToToolStripMenuItem;
+        private Button uninstallButton;
+        private Button saveButton;
     }
 }

@@ -12,7 +12,6 @@ namespace FSModMan.data
         public string targetLocation = "";
         public string originLocation = "";
         public List<Group> groups = new();
-        public Group? defaultGroup;
         public List<Addon> addons = new();
     }
 }

@@ -30,24 +30,6 @@ namespace FSModMan
 
             addonTreeView.Nodes.Clear();
 
-            // Add all addons to default group
-            if(dataController.library.defaultGroup != null)
-            {
-                TreeNode defaultGroupNode = new(dataController.library.defaultGroup.Name);
-                defaultGroupNode.Tag = dataController.library.defaultGroup;
-
-                addonTreeView.Nodes.Add(defaultGroupNode);
-
-                foreach (Addon addon in dataController.library.defaultGroup.addons)
-                {
-                    TreeNode addonNode = new(addon.ToString());
-                    addonNode.Tag = addon;
-                    addonNode.ContextMenuStrip = addonContextMenu;
-                    defaultGroupNode.Nodes.Add(addonNode);
-                }
-            }
-            
-
             // Create nodes for each group and add addons of this group
             foreach(Group group in dataController.library.groups)
             {
@@ -60,8 +42,9 @@ namespace FSModMan
                 foreach(Addon addon in group.addons)
                 {
                     TreeNode addonNode = new(addon.ToString());
-                    addonNode.Tag= addon;
-                    groupNode.Nodes.Add(addon.ToString());
+                    addonNode.Tag = addon;
+                    addonNode.ContextMenuStrip = addonContextMenu;
+                    groupNode.Nodes.Add(addonNode);
                 }
             }
 
@@ -82,27 +65,11 @@ namespace FSModMan
             dataName.Visible = true;
             dataDescription.Visible = true;
             installButton.Visible = true;
+            uninstallButton.Visible = true;
 
             dataName.Text = data.Name;
             dataDescription.Text = data.Description;
 
-            if (data is Addon)
-            {
-                Addon addon = (Addon)data;
-                installButton.Text = addon.IsInstalled ? "Uninstall" : "Install";
-            }
-            else if(data is Group)
-            {
-                Group group = (Group)data;
-                if(group.addons.Count > 0)
-                {
-                    installButton.Text = group.IsInstalled() ? "Uninstall" : "Install";
-                }
-                else
-                {
-                    installButton.Visible = false;
-                } 
-            }
         }
 
         private void addAddonnMenuBtn_Click(object sender, EventArgs e)
@@ -123,7 +90,7 @@ namespace FSModMan
             UpdateAddonTreeView();
         }
 
-        private void installBtn_Click(object sender, EventArgs e)
+        private void installButton_Click(object sender, EventArgs e)
         {
             Object selectedNode = addonTreeView.SelectedNode.Tag;
 
@@ -131,9 +98,24 @@ namespace FSModMan
                 return;
 
             if(selectedNode is Addon)
-                dataController.MoveAddon((Addon)selectedNode);
+                dataController.InstallAddon((Addon)selectedNode);
             else if(selectedNode is Group)
-                dataController.MoveGroup((Group)selectedNode);
+                dataController.InstallGroup((Group)selectedNode);
+
+            UpdateInfoView(selectedNode);
+        }
+
+        private void uninstallButton_Click(object sender, EventArgs e)
+        {
+            Object selectedNode = addonTreeView.SelectedNode.Tag;
+
+            if (selectedNode == null)
+                return;
+
+            if (selectedNode is Addon)
+                dataController.UninstallAddon((Addon)selectedNode);
+            else if (selectedNode is Group)
+                dataController.UninstallGroup((Group)selectedNode);
 
             UpdateInfoView(selectedNode);
         }
@@ -203,7 +185,7 @@ namespace FSModMan
 
             Group group = (Group)item.Tag;
 
-            dataController.AddAddonToGroup(currentAddon, group);
+            dataController.MoveAddonToGroup(currentAddon, group);
 
             UpdateAddonTreeView();
 
@@ -213,6 +195,11 @@ namespace FSModMan
         private void addonTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             UpdateInfoView(addonTreeView.SelectedNode.Tag);
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            // TODO: Implement Addon Saving
         }
     }
 }

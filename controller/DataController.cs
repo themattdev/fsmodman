@@ -14,7 +14,7 @@ namespace FSModMan.controller
         {
             
             library = new Library();
-            library.defaultGroup = new Group("All");
+            library.groups.Add(new Group("No Group"));
 
             if (File.Exists(Application.StartupPath + "\\fslib.xml"))
             {
@@ -41,8 +41,7 @@ namespace FSModMan.controller
             Addon addon = new Addon(addonFolder, addonFolder);
 
             library.addons.Add(addon);
-            if(library.defaultGroup != null)
-                library.defaultGroup.Add(addon);
+            library.groups[0].Add(addon);
 
         }
 
@@ -68,40 +67,65 @@ namespace FSModMan.controller
                         break;
                     }
                 }
-
-
             }
 
             library.groups.Add(new Group(groupName));
             
         }
 
-        public void AddAddonToGroup(Addon addon, Group group)
+        public void MoveAddonToGroup(Addon addon, Group group)
         {
+            // Remove addon from current group
+            foreach(Group g in library.groups)
+            {
+                if(g.addons.Contains(addon))
+                {
+                    g.addons.Remove(addon);
+                    break;
+                }
+            }
+
+            // Add addon to new group
             foreach(Group g in library.groups)
             {
                 if (g.Equals(group))
                 {
                     g.Add(addon);
+                    break;
                 }
             }
         }
 
-        public void MoveAddon(Addon addon)
+        public void InstallAddon(Addon addon)
         {
-            
-            if(addon.IsInstalled)
-                Directory.Move(library.targetLocation + '\\' + addon.Path, library.originLocation + '\\' + addon.Path);
-            else
-                Directory.Move(library.originLocation + '\\' + addon.Path, library.targetLocation + '\\' + addon.Path);
+            if (addon.IsInstalled)
+                return;
 
-            addon.IsInstalled = !addon.IsInstalled;
+            Directory.Move(library.originLocation + '\\' + addon.Path, library.targetLocation + '\\' + addon.Path);
+
+            addon.IsInstalled = true;
         }
 
-        public void MoveGroup(Group group)
+        public void UninstallAddon(Addon addon)
+        {
+            if (!addon.IsInstalled)
+                return;
+
+            addon.IsInstalled = false;
+
+            Directory.Move(library.targetLocation + '\\' + addon.Path, library.originLocation + '\\' + addon.Path);
+        }
+
+        public void InstallGroup(Group group)
         {
             foreach (Addon addon in group.addons)
-                MoveAddon(addon);
+                InstallAddon(addon);
+        }
+
+        public void UninstallGroup(Group group)
+        {
+            foreach (Addon addon in group.addons)
+                UninstallAddon(addon);
         }
 
         public List<Group> GetNotAssignedGroups(Addon addon)
