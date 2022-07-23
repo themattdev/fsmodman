@@ -43,10 +43,10 @@ namespace FSModMan.data
             addons.Clear();
         }
 
-        public bool IsInstalled()
+        public override bool IsInstalled()
         {
             foreach (Addon addon in addons)
-                if (addon.IsInstalled == false)
+                if (addon.IsInstalled() == false)
                     return false;
 
             return true;

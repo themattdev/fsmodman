@@ -29,12 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.addonTreeView = new System.Windows.Forms.TreeView();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addAddonnMenuBtn = new System.Windows.Forms.ToolStripMenuItem();
             this.addGroupMenuBtn = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.folderDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.installButton = new System.Windows.Forms.Button();
             this.dataName = new System.Windows.Forms.TextBox();
@@ -47,19 +45,11 @@
             this.addToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uninstallButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
+            this.addonTreeView = new FSModMan.ui.MyTreeView();
+            this.installedLabel = new System.Windows.Forms.Label();
             this.mainMenu.SuspendLayout();
             this.addonContextMenu.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // addonTreeView
-            // 
-            this.addonTreeView.CheckBoxes = true;
-            this.addonTreeView.Location = new System.Drawing.Point(12, 27);
-            this.addonTreeView.Name = "addonTreeView";
-            this.addonTreeView.Size = new System.Drawing.Size(226, 365);
-            this.addonTreeView.TabIndex = 2;
-            this.addonTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.addonTreeView_AfterSelect);
-            this.addonTreeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.addonTreeView_MouseClick);
             // 
             // mainMenu
             // 
@@ -75,8 +65,7 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addAddonnMenuBtn,
-            this.addGroupMenuBtn,
-            this.saveToolStripMenuItem});
+            this.addGroupMenuBtn});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -95,13 +84,6 @@
             this.addGroupMenuBtn.Text = "Add Group";
             this.addGroupMenuBtn.Click += new System.EventHandler(this.addGroupMenuBtn_Click);
             // 
-            // saveToolStripMenuItem
-            // 
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
-            this.saveToolStripMenuItem.Text = "Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
-            // 
             // installButton
             // 
             this.installButton.Location = new System.Drawing.Point(12, 398);
@@ -110,7 +92,6 @@
             this.installButton.TabIndex = 5;
             this.installButton.Text = "Install";
             this.installButton.UseVisualStyleBackColor = true;
-            this.installButton.Visible = false;
             this.installButton.Click += new System.EventHandler(this.installButton_Click);
             // 
             // dataName
@@ -193,24 +174,47 @@
             this.uninstallButton.TabIndex = 13;
             this.uninstallButton.Text = "Uninstall";
             this.uninstallButton.UseVisualStyleBackColor = true;
-            this.uninstallButton.Visible = false;
-            this.uninstallButton.Click += new System.EventHandler(this.uninstallButton_Click);
+            this.uninstallButton.Click += new System.EventHandler(this.installButton_Click);
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(244, 217);
+            this.saveButton.Location = new System.Drawing.Point(244, 232);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(75, 23);
             this.saveButton.TabIndex = 14;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Visible = false;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            // 
+            // addonTreeView
+            // 
+            this.addonTreeView.CheckBoxes = true;
+            this.addonTreeView.Location = new System.Drawing.Point(12, 27);
+            this.addonTreeView.Name = "addonTreeView";
+            this.addonTreeView.Size = new System.Drawing.Size(226, 365);
+            this.addonTreeView.TabIndex = 15;
+            this.addonTreeView.BeforeCheck += new System.Windows.Forms.TreeViewCancelEventHandler(this.addonTreeView_BeforeCheck);
+            this.addonTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.addonTreeView_AfterCheck);
+            this.addonTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.addonTreeView_AfterSelect);
+            // 
+            // installedLabel
+            // 
+            this.installedLabel.AutoSize = true;
+            this.installedLabel.Location = new System.Drawing.Point(246, 214);
+            this.installedLabel.Name = "installedLabel";
+            this.installedLabel.Size = new System.Drawing.Size(51, 15);
+            this.installedLabel.TabIndex = 16;
+            this.installedLabel.Text = "Installed";
+            this.installedLabel.Visible = false;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 428);
+            this.Controls.Add(this.installedLabel);
+            this.Controls.Add(this.addonTreeView);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.uninstallButton);
             this.Controls.Add(this.originButton);
@@ -220,7 +224,6 @@
             this.Controls.Add(this.dataDescription);
             this.Controls.Add(this.dataName);
             this.Controls.Add(this.installButton);
-            this.Controls.Add(this.addonTreeView);
             this.Controls.Add(this.mainMenu);
             this.MainMenuStrip = this.mainMenu;
             this.Name = "MainForm";
@@ -234,7 +237,6 @@
         }
 
         #endregion
-        private TreeView addonTreeView;
         private MenuStrip mainMenu;
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem addAddonnMenuBtn;
@@ -247,10 +249,11 @@
         private Label originPath;
         private Button targetButton;
         private Button originButton;
-        private ToolStripMenuItem saveToolStripMenuItem;
         private ContextMenuStrip addonContextMenu;
         private ToolStripMenuItem addToToolStripMenuItem;
         private Button uninstallButton;
         private Button saveButton;
+        private ui.MyTreeView addonTreeView;
+        private Label installedLabel;
     }
 }

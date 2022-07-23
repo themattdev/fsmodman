@@ -5,7 +5,7 @@ namespace FSModMan.data
     public class Addon : Data
     {
 
-        public bool IsInstalled;
+        bool installed;
         public string? Path;
 
         public List<string> files = new();
@@ -14,7 +14,7 @@ namespace FSModMan.data
         {
             Name = _Name;
             Path = _Path;
-            IsInstalled = false;
+            installed = false;
             Description = "Enter Description";
 
         }
@@ -49,6 +49,16 @@ namespace FSModMan.data
             int result = (string.IsNullOrEmpty(Name) ? 0 : Name.GetHashCode()) + (string.IsNullOrEmpty(Path) ? 0 : Path.GetHashCode());
 
             return result;
+        }
+
+        public override bool IsInstalled()
+        {
+            return installed;
+        }
+
+        public void SetInstalled(bool _installed)
+        {
+            installed = _installed;
         }
     }
 }

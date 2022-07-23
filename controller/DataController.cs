@@ -98,34 +98,22 @@ namespace FSModMan.controller
 
         public void InstallAddon(Addon addon)
         {
-            if (addon.IsInstalled)
+            if (addon.IsInstalled())
                 return;
 
             Directory.Move(library.originLocation + '\\' + addon.Path, library.targetLocation + '\\' + addon.Path);
 
-            addon.IsInstalled = true;
+            addon.SetInstalled(true);
         }
 
         public void UninstallAddon(Addon addon)
         {
-            if (!addon.IsInstalled)
+            if (!addon.IsInstalled())
                 return;
 
-            addon.IsInstalled = false;
+            addon.SetInstalled(false);
 
             Directory.Move(library.targetLocation + '\\' + addon.Path, library.originLocation + '\\' + addon.Path);
-        }
-
-        public void InstallGroup(Group group)
-        {
-            foreach (Addon addon in group.addons)
-                InstallAddon(addon);
-        }
-
-        public void UninstallGroup(Group group)
-        {
-            foreach (Addon addon in group.addons)
-                UninstallAddon(addon);
         }
 
         public List<Group> GetNotAssignedGroups(Addon addon)

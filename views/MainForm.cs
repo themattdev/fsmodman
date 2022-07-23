@@ -11,6 +11,8 @@ namespace FSModMan
 
         private Addon? currentAddon;
 
+        bool busy = false;
+
         public MainForm()
         {
             InitializeComponent();
@@ -56,7 +58,6 @@ namespace FSModMan
         private void UpdateInfoView(Object node)
         {
 
-
             if (node is not Data)
                 return;
 
@@ -64,11 +65,14 @@ namespace FSModMan
 
             dataName.Visible = true;
             dataDescription.Visible = true;
-            installButton.Visible = true;
-            uninstallButton.Visible = true;
+            saveButton.Visible = true;
+            installedLabel.Visible = true;
 
             dataName.Text = data.Name;
             dataDescription.Text = data.Description;
+
+
+            installedLabel.Text = data.IsInstalled() ? "Installed" : "Not Installed";
 
         }
 
@@ -92,32 +96,30 @@ namespace FSModMan
 
         private void installButton_Click(object sender, EventArgs e)
         {
-            Object selectedNode = addonTreeView.SelectedNode.Tag;
 
-            if (selectedNode == null)
-                return;
+            // Loop over all groups
+            foreach(TreeNode groupNode in addonTreeView.Nodes)
+            {
+                // Loop over all addon nodes
+                foreach(TreeNode addonNode in groupNode.Nodes)
+                {
+                    // Install addon if checked
+                    if (addonNode.Checked)
+                    {
+                        Object nodeTag = addonNode.Tag;
+                        if (nodeTag is Addon)
+                        {
+                            if(((Button)sender).Text.Equals("Install"))
+                                dataController.InstallAddon((Addon)nodeTag);
+                            else
+                                dataController.UninstallAddon((Addon)nodeTag);
+                        }
+                    }
+                }
+            }
 
-            if(selectedNode is Addon)
-                dataController.InstallAddon((Addon)selectedNode);
-            else if(selectedNode is Group)
-                dataController.InstallGroup((Group)selectedNode);
-
-            UpdateInfoView(selectedNode);
-        }
-
-        private void uninstallButton_Click(object sender, EventArgs e)
-        {
-            Object selectedNode = addonTreeView.SelectedNode.Tag;
-
-            if (selectedNode == null)
-                return;
-
-            if (selectedNode is Addon)
-                dataController.UninstallAddon((Addon)selectedNode);
-            else if (selectedNode is Group)
-                dataController.UninstallGroup((Group)selectedNode);
-
-            UpdateInfoView(selectedNode);
+            if(addonTreeView.SelectedNode != null)
+                UpdateInfoView(addonTreeView.SelectedNode.Tag);
         }
 
         private void targetButton_Click(object sender, EventArgs e)
@@ -199,7 +201,67 @@ namespace FSModMan
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            // TODO: Implement Addon Saving
+            // Get the current addon or group
+
+            if(addonTreeView.SelectedNode == null) return;
+
+            Object tag = addonTreeView.SelectedNode.Tag;
+
+            if(tag == null) return;
+
+            if(tag is Data)
+            {
+                Data data = (Data)tag;
+                data.Name = dataName.Text;
+                data.Description = dataDescription.Text;
+            }
+
+            dataController.Save();
+
+            UpdateAddonTreeView();
+        }
+
+        private void addonTreeView_AfterCheck(object sender, TreeViewEventArgs e)
+        {
+
+            if(e.Action == TreeViewAction.Unknown) return;
+
+            if(e.Node == null) return;
+
+            foreach (TreeNode child in e.Node.Nodes)
+            {
+                child.Checked = e.Node.Checked;
+            }
+
+            busy = false;
+
+        }
+
+        private void addonTreeView_BeforeCheck(object sender, TreeViewCancelEventArgs e)
+        {
+
+            // Ignore if node is null
+            if (e.Node == null) return;
+
+            if (busy && e.Action != TreeViewAction.Unknown)
+            {
+                e.Cancel = true;
+                return;
+            }
+                
+            if (e.Node.Parent == null)
+            {
+                if (busy)
+                    e.Cancel = true;
+                else
+                    busy = true;
+
+                return;
+            }
+              
+            // Do not allow changing of the check box if group is checked
+            if(e.Node.Parent.Checked && e.Action != TreeViewAction.Unknown)
+                e.Cancel = true;
         }
     }
 }
